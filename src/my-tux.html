@@ -1,0 +1,200 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/iron-iconset-svg/iron-iconset-svg.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+
+
+
+<dom-module id="my-tux">
+
+  <template>
+
+    <style is="custom-style">
+      :host {
+        display: block;
+        padding: 10px;
+      }
+      .card {
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+        padding: 16px;
+        margin: 24px;
+        border-radius: 5px;
+        background-color: #fff;
+        color: #757575;
+      }
+      .circle {
+        display: inline-block;
+        height: 64px;
+        width: 64px;
+        border-radius: 50%;
+        background: #ddd;
+        line-height: 64px;
+        font-size: 30px;
+        color: #555;
+        text-align: center;
+      }
+      h1 {
+        font-size: 22px;
+        margin: 16px 0;
+        color: #212121;
+      }
+
+      .controls {
+        float: left;
+      }
+
+      #tux {
+        text-align: center;
+      }
+
+      paper-icon-button.light {
+        color: var(--paper-grey-500);
+      }
+
+
+      paper-icon-button.light:hover {
+        background-color: var(--paper-yellow-200);
+        color: var(--paper-grey-900);
+      }
+
+      paper-icon-button.light[toggles][active] {
+        background-color: var(--paper-yellow-200);
+        color: var(--paper-grey-900);
+      }
+
+      paper-icon-button{
+        background-color: var(--paper-grey-50);
+        color: var(--paper-grey-900);
+        --paper-icon-button-ink-color: var(--paper-grey-900);
+      }
+
+      paper-icon-button:hover{
+        background-color: var(--paper-grey-200);
+      }
+    </style>
+
+    <div class="card">
+      <h1>TuxDroid</h1>
+
+      <div class="controls">
+        <h2>Control</h2>
+        <div class="control">
+          <h3>Eyes</h3>
+          <div>
+            <paper-icon-button on-tap="eyesClose" id="button-eyes-close" icon="icons:arrow-downward"></paper-icon-button>
+            <paper-icon-button on-tap="eyesOpen" id="button-eyes-open" icon="icons:arrow-upward"></paper-icon-button>
+          </div>
+          <div>
+            <paper-icon-button toggles noink class="light" on-tap="eyeLeftToggle" id="button_eye_left_toggle" icon="icons:lightbulb-outline"></paper-icon-button>
+            <paper-icon-button toggles noink class="light" on-tap="eyeRightToggle" id="button_eye_right_toggle" icon="icons:lightbulb-outline"></paper-icon-button>
+          </div>
+        </div>
+        <div class="control">
+          <h3>Mouth</h3>
+          <paper-icon-button on-tap="mouthOpen" id="button-mouth-open" icon="icons:arrow-downward"></paper-icon-button>
+          <paper-icon-button on-tap="mouthClose" id="button-mouth-close" icon="icons:arrow-upward"></paper-icon-button>
+        </div>
+        <div class="control">
+          <h3>Wings</h3>
+          <paper-icon-button on-tap="wingsMovePositionDown" id="button-wings-down" icon="icons:arrow-downward"></paper-icon-button>
+          <paper-icon-button on-tap="wingsMovePositionUp" id="button-wings-up" icon="icons:arrow-upward"></paper-icon-button>
+        </div>
+      </div>
+
+      <div id="tux">
+        <object id="tux_object" type="image/svg+xml" data="/images/tux.svg">
+            TuxDroid
+        </object>
+      </div>
+    </div>
+
+  </template>
+
+  <script>
+
+    Polymer({
+
+      is: 'my-tux',
+      eyeRightToggle: function(){
+        var svg = this.$.tux_object;
+        var svgDoc = svg.contentDocument;
+        var eye = svgDoc.getElementById("eyes_right_on");
+        if (eye.getAttribute("display") == ""){
+            eye.setAttributeNS(null, "display", "none");
+        } else {
+            eye.setAttributeNS(null, "display", "");
+        }
+      },
+      eyeLeftToggle: function(){
+        var svg = this.$.tux_object;
+        var svgDoc = svg.contentDocument;
+        var eye = svgDoc.getElementById("eyes_left_on");
+        if (eye.getAttribute("display") == ""){
+            eye.setAttributeNS(null, "display", "none");
+        } else {
+            eye.setAttributeNS(null, "display", "");
+        }
+      },
+      eyesClose: function(){
+        var svg = this.$.tux_object;
+        var svgDoc = svg.contentDocument;
+        var eyesClosed = svgDoc.getElementById("eyes_closed");
+        eyesClosed.setAttributeNS(null, "display", "");
+      },
+      eyesOpen: function(){
+        var svg = this.$.tux_object;
+        var svgDoc = svg.contentDocument;
+        var eyesClosed  = svgDoc.getElementById("eyes_closed");
+        eyesClosed.setAttributeNS(null, "display", "none");
+      },
+      mouthClose: function(){
+        var svg = this.$.tux_object;
+        var svgDoc = svg.contentDocument;
+        var mouthOpened = svgDoc.getElementById("mouth_opened");
+        mouthOpened.setAttributeNS(null, "display", "none");
+      },
+      mouthOpen: function(){
+        var svg = this.$.tux_object;
+        var svgDoc = svg.contentDocument;
+        var mouthOpened = svgDoc.getElementById("mouth_opened");
+        mouthOpened.setAttributeNS(null, "display", "");
+      },
+      mouthClose: function(){
+        var svg = this.$.tux_object;
+        var svgDoc = svg.contentDocument;
+        var mouthOpened = svgDoc.getElementById("mouth_opened");
+        mouthOpened.setAttributeNS(null, "display", "none");
+      },
+      wingsMovePositionDown: function(){
+        var svg = this.$.tux_object;
+        var svgDoc = svg.contentDocument;
+        var wingsUp = svgDoc.getElementById("wings_up");
+        wingsUp.setAttributeNS(null, "display", "none");
+        var wingsUp = svgDoc.getElementById("wings_down");
+        wingsUp.setAttributeNS(null, "display", "");
+      },
+      wingsMovePositionUp: function(){
+        var svg = this.$.tux_object;
+        var svgDoc = svg.contentDocument;
+        var wingsUp = svgDoc.getElementById("wings_down");
+        wingsUp.setAttributeNS(null, "display", "none");
+        var wingsUp = svgDoc.getElementById("wings_up");
+        wingsUp.setAttributeNS(null, "display", "");
+      }
+
+
+    });
+
+  </script>
+
+</dom-module>
