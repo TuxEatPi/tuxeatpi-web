@@ -16,7 +16,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
 
-<dom-module id="tep-control">
+<dom-module id="tep-controls">
 
   <template>
 
@@ -112,21 +112,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </div>
 
       <div id="tux">
-        <object id="tux_object" type="image/svg+xml" data="/images/tux.svg">
+        <object id="tux_object" type="image/svg+xml" data="images/tux.svg">
             TuxDroid
         </object>
         <iron-ajax
             auto
             id="ajax_wings_get_position"
-            url="http://127.0.0.1:8000/tux/wings/position"
+            url="/tux/wings/position"
             handle-as="json"
             on-response="WingsShowPosition"
+            debounce-duration="500"
             >
         </iron-ajax>
         <iron-ajax
             auto
             id="ajax_wings_set_position"
-            url="http://127.0.0.1:8000/tux/wings/position"
+            url="/tux/wings/position"
+            content-type="application/json"
             handle-as="json"
             method="POST"
             >
@@ -140,12 +142,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     Polymer({
 
-      is: 'tep-control',
-          _ajaxWingsGetPosition: function() {
-            this.async(function() {
+      is: 'tep-controls',
+      // Maybe _ajaxWingsGetPosition is useless
+      _ajaxWingsGetPosition: function() {
+          this.async(function() {
+              console.log("QQQQQQQ");
               this.$.ajax_wings_get_position.generateRequest();
-            }, 500);
-          },
+          }, 500);
+      },
       eyeRightToggle: function(){
         var svg = this.$.tux_object;
         var svgDoc = svg.contentDocument;
@@ -197,10 +201,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         mouthOpened.setAttributeNS(null, "display", "none");
       },
       wingsMovePositionDown: function(){
-        this.$.ajax_wings_set_position.params = { "position": "down"};
+        this.$.ajax_wings_set_position.body = {"position": "down"};
       },
       wingsMovePositionUp: function(){
-        this.$.ajax_wings_set_position.params = { "position": "up"};
+        this.$.ajax_wings_set_position.body = {"position": "up"};
       },
       WingsShowPosition: function(response){
         console.log('received response');
@@ -209,22 +213,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var svg = this.$.tux_object;
         var svgDoc = svg.contentDocument;
         if (position == "up") {
-            var wingsUp = svgDoc.getElementById("wings_down");
-            wingsUp.setAttributeNS(null, "display", "none");
+            var wingsDown = svgDoc.getElementById("wings_down");
+            if (wingsDown == null) {
+                return
+            }
+            wingsDown.setAttributeNS(null, "display", "none");
             var wingsUp = svgDoc.getElementById("wings_up");
             wingsUp.setAttributeNS(null, "display", "");
         } else if (position == "down"){
             var wingsUp = svgDoc.getElementById("wings_up");
+            if (wingsUp == null) {
+                return
+            }
             wingsUp.setAttributeNS(null, "display", "none");
-            var wingsUp = svgDoc.getElementById("wings_down");
-            wingsUp.setAttributeNS(null, "display", "");
+            var wingsDown = svgDoc.getElementById("wings_down");
+            wingsDown.setAttributeNS(null, "display", "");
         } else {
             console.log("Error")
         }
         this._ajaxWingsGetPosition();
       }
-
-
     });
 
   </script>
