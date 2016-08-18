@@ -1,7 +1,0 @@
-{
-  "entrypoint": "index.html",
-  "shell": "src/tuxeatpi-app.html",
-  "fragments": [
-    "src/tep-control.html"
-  ]
-}
