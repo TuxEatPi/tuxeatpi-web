@@ -48,28 +48,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
 
       <h1 class="page-title" tabindex="-1">TuxDroid</h1>
-      <paper-tabs selected="{{subpage}}" scrollable>
-        <paper-tab link>
+      <paper-tabs id="tabs_subpages" selected="{{subpage}}" scrollable>
+        <paper-tab tab-id="controls" link>
           <iron-icon icon="av:games"></iron-icon>
-          <a data-route="controls" href="{{baseUrl}}tux/controls">Controls</a>
+          <a data-route="tux-controls" href="{{baseUrl}}tux/controls">Controls</a>
         </paper-tab>
-        <paper-tab link>
+        <paper-tab tab-id="settings" link>
           <iron-icon icon="settings"></iron-icon>
-          <a data-route="tux/settings" href="{{baseUrl}}tux/settings">Settings</a>
+          <a data-route="tux-settings" href="{{baseUrl}}tux/settings">Settings</a>
         </paper-tab>
       </paper-tabs>
       <iron-pages selected="{{subpage}}">
-        <section data-route="tux/controls" tabindex="-1">
+        <section data-route="tux-controls" tabindex="-1">
             <tep-controls></tep-controls>
         </section>
 
-        <section data-route="tux/settings" tabindex="-1">
+        <section data-route="tux-settings" tabindex="-1">
             <tep-settings></tep-settings>
         </section>
 
       </iron-pages>
-
-
   </template>
 
   <script>
@@ -78,10 +76,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       Polymer({
         is: 'tep-tux',
+      properties: {
+          routeParams: {
+            type: Object,
+            observer: '_routeParamsChanged'
+          }
+        },
+        _routeParamsChanged: function(newValue) {
+            // Set tab in function of the route
+            var tep_tux = this;
+            this.$.tabs_subpages.items.forEach(function(tab, index){
+                if (tab.getAttribute("tab-id") == newValue.subpage){
+                    tep_tux.set('subpage', index);
+                }
+            })
+        },
 
         ready: function() {
                 this.async(function() {
-                  // If the path is blank, redirect to /
+                  // If the path is blank, redirect to controls
                   if (!this.subpage) {
                     this.set('subpage', 0);
                   }

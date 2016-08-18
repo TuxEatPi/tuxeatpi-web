@@ -41,12 +41,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       next();
     });
 
+
     page('/', function() {
       app.route = 'home';
       setFocus(app.route);
     });
 
-    page('/home', function() {
+    page(app.baseUrl + 'home', function() {
       app.route = 'home';
       setFocus(app.route);
     });
@@ -56,19 +57,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       setFocus(app.route);
     });
 
-    page('/tux', function() {
+    page(app.baseUrl + 'tux', function() {
       app.route = 'tux';
       setFocus(app.route);
     });
 
-    page('/tux/:subpage', function(data) {
+    page(app.baseUrl + 'tux/:subpage', function(data) {
 
       app.route = 'tux';
       app.params = data.params;
       setFocus(app.route);
     });
 
-    page('/about', function() {
+    page(app.baseUrl + 'about', function() {
       app.route = 'about';
       setFocus(app.route);
     });

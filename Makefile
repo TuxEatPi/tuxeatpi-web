@@ -13,10 +13,11 @@ env:
 
 builder:
 	rm -rf build
-	polymer.js build --entrypoint app/index.html 
-	#polymer.js build --include-dependencies=bower_components/webcomponentsjs/webcomponents-lite.min.js bower_components/iron-ajax/iron-ajax.html bower_components/iron-icons/iron-icons.html bower_components/iron-ajax/iron-request.html bower_components/promise-polyfill/promise-polyfill-lite.html bower_components/promise-polyfill/Promise.js service-worker.js -v
-	cp -r images build/bundled
-	cp -r images build/unbundled
+	node_modules/polymer-cli/bin/polymer.js build --entrypoint app/index.html
+	cp -r app/images build/bundled/app
+	cp -r app/images build/unbundled/app
+	cp -r app/elements/tep-tux/images build/unbundled/app/elements/tep-tux
 
 deploy:
 	rm -rf ../tuxeatpi-server/ui; cp -r build/unbundled/app ../tuxeatpi-server/ui
+	sed -i 's#o.baseUrl="[^"]*"\,#o.baseUrl="/ui/",#g' ../tuxeatpi-server/ui/scripts/app.js
