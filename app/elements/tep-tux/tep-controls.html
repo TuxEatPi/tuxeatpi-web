@@ -120,7 +120,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             id="ajax_wings_get_position"
             url="/tux/wings/position"
             handle-as="json"
+            content-type='application/json'
             on-response="WingsShowPosition"
+            debounce-duration="500"
             >
         </iron-ajax>
         <iron-ajax
@@ -130,6 +132,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             content-type="application/json"
             handle-as="json"
             method="POST"
+            debounce-duration="500"
             >
         </iron-ajax>
       </div>
@@ -142,12 +145,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     Polymer({
 
       is: 'tep-controls',
-      // Maybe _ajaxWingsGetPosition is useless
+      properties: {
+        wingsPosition: String,
+      },
+      // TODO change pulling to pushing ...
       _ajaxWingsGetPosition: function() {
           this.async(function() {
-              console.log("QQQQQQQ");
               this.$.ajax_wings_get_position.generateRequest();
-          }, 500000);
+          }, 500);
       },
       eyeRightToggle: function(){
         var svg = this.$.tux_object;
@@ -201,14 +206,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
       wingsMovePositionDown: function(){
         this.$.ajax_wings_set_position.body = {"position": "down"};
+        if ( wingsPosition != 'down') {
+            this.$.ajax_wings_set_position.body = {"position": "down"};
+        }
       },
       wingsMovePositionUp: function(){
-        this.$.ajax_wings_set_position.body = {"position": "up"};
+        if ( wingsPosition != 'up') {
+            this.$.ajax_wings_set_position.body = {"position": "up"};
+        }
       },
       WingsShowPosition: function(response){
-        console.log('received response');
         position = response.detail.response
-        console.log(position)
         var svg = this.$.tux_object;
         var svgDoc = svg.contentDocument;
         if (position == "up") {
@@ -219,6 +227,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             wingsDown.setAttributeNS(null, "display", "none");
             var wingsUp = svgDoc.getElementById("wings_up");
             wingsUp.setAttributeNS(null, "display", "");
+            wingsPosition = position;
         } else if (position == "down"){
             var wingsUp = svgDoc.getElementById("wings_up");
             if (wingsUp == null) {
@@ -227,6 +236,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             wingsUp.setAttributeNS(null, "display", "none");
             var wingsDown = svgDoc.getElementById("wings_down");
             wingsDown.setAttributeNS(null, "display", "");
+            wingsPosition = position;
         } else {
             console.log("Error")
         }
