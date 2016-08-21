@@ -13,8 +13,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../../bower_components/iron-iconset-svg/iron-iconset-svg.html">
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-request.html">
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
-
+<link rel="import" href="../../bower_components/paper-radio-button/paper-radio-button.html">
+<link rel="import" href="../../bower_components/paper-radio-group/paper-radio-group.html">
+<link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../bower_components/paper-tabs/paper-tabs.html">
+<link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
 
 
 <dom-module id="tep-settings">
@@ -57,10 +63,96 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <h1>TuxDroid Settings</h1>
 
       <div class="settings">
-        <div class="setting">
-          <paper-input label="Name"></paper-input>
-        </div>
+        <form is="iron-form" method="get" action="/" id="settings-form">
+          <div class="setting-section">
+            <h2>Global</h2>
+              <div class="setting">
+                <paper-input id="global__name" label="Name"></paper-input>
+              </div>
+              <div class="setting">
+                <label id="gender_label">Gender:</label>
+                <paper-radio-group aria-labelledby="gender_label" id="global__gender">
+                  <paper-radio-button name="female" value="female">Female</paper-radio-button>
+                  <paper-radio-button name="male" value="male">Male</paper-radio-button>
+                </paper-radio-group>
+              </div>
+          </div>
+          <div class="setting-section">
+            <h2>Speech</h2>
+              </div>
+              <div class="setting">
+                <paper-input id="speech__app_id" label="Nuance App ID"></paper-input>
+              </div>
+              <div class="setting">
+                <paper-input id="speech__app_key" label="Nuance App key"></paper-input>
+              </div>
+              <div class="setting">
+                <paper-dropdown-menu label="Language" no-ink no-animations on-iron-select="_languageSelected">
+                  <paper-listbox id="speech__languages" class="dropdown-content" attr-for-selected="data-value">
+                    <template is="dom-repeat" items="{{languages}}" as="language">
+                      <paper-item data-value="[[language]]" >[[language]]</paper-item>
+                    </template>
+                  </paper-listbox>
+                </paper-dropdown-menu>
+              </div>
+              <div class="setting">
+                <paper-dropdown-menu label="Voice" no-ink no-animations>
+                  <paper-listbox id="speech__voices" class="dropdown-content" attr-for-selected="data-value">
+                    <template is="dom-repeat" items="{{voices}}" as="voice">
+                      <paper-item data-value="[[voice]]" >[[voice]]</paper-item>
+                     </template>
+                  </paper-listbox>
+                </paper-dropdown-menu>
+              </div>
+              <div class="setting">
+                <paper-input id="speech__url" label="URL"></paper-input>
+              </div>
+              <div class="setting">
+                <label id="codec_label">Codec:</label>
+                <paper-radio-group aria-labelledby="codec_label" id="speech__codec">
+                  <paper-radio-button name="wav" value="wav">Wav</paper-radio-button>
+                  <paper-radio-button name="speex" value="speex">Speex</paper-radio-button>
+                  <paper-radio-button name="opus" value="opus">Opus</paper-radio-button>
+                </paper-radio-group>
+              </div>
+          </div>
+          <hr/>
+          <div class="form_button">
+            <paper-button raised on-tap="getSettings">Reset</paper-button>
+            <paper-button raised on-tap="settingsSave">Submit</paper-button>
+          </div>
+        </form>
       </div>
+      <iron-ajax
+        id="ajax_settings_get"
+        url="http://127.0.0.1:8000/tux/settings"
+        handle-as="json"
+        method="GET"
+        content-type='application/json'
+        on-response="settingsShow"
+        debounce-duration="500"
+        >
+      </iron-ajax>
+      <iron-ajax
+        auto
+        id="ajax_settings_post"
+        url="http://127.0.0.1:8000/tux/settings"
+        handle-as="json"
+        method="POST"
+        content-type='application/json'
+        debounce-duration="500"
+        >
+      </iron-ajax>
+      <iron-ajax
+        id="ajax_languages_get"
+        url="http://127.0.0.1:8000/tux/settings/languages"
+        handle-as="json"
+        method="GET"
+        content-type='application/json'
+        on-response="languagesShow"
+        debounce-duration="500"
+        >
+      </iron-ajax>
     </div>
 
   </template>
@@ -68,7 +160,76 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <script>
 
     Polymer({
-      is: 'tep-settings'
+      is: 'tep-settings',
+
+      properties: {
+        languages: {
+          type: Array,
+          value: []
+        },
+        voices: {
+          type: Array,
+          value: []
+        },
+        lang_voices: {
+          type: Array,
+          value: []
+        },
+        settings: {
+          type: Array,
+          value: []
+        }
+      },
+
+      ready: function() {
+                this.async(function() {
+                  // If the path is blank, redirect to controls
+                  this.getSettings()
+                });
+      },
+
+      getSettings: function(){
+        this.$.ajax_languages_get.generateRequest()
+        this.$.ajax_settings_get.generateRequest()
+      },
+
+      settingsShow: function(response) {
+        settings = response.detail.response
+        this.$.global__name.value = settings.global.name
+        this.$.global__gender.selected = settings.global.gender
+        this.$.speech__app_id.value = settings.speech.app_id
+        this.$.speech__app_key.value = settings.speech.app_key
+        this.$.speech__languages.selected = settings.speech.language
+        this.$.speech__voices.selected = settings.speech.voice
+        this.$.speech__url.value = settings.speech.url
+        this.$.speech__codec.selected = settings.speech.codec
+        this.settings = settings
+      },
+
+      settingsSave: function(){
+        this.settings.global.name = this.$.global__name.value
+        this.settings.global.gender = this.$.global__gender.selected
+        this.settings.speech.app_id = this.$.speech__app_id.value
+        this.settings.speech.app_key = this.$.speech__app_key.value
+        this.settings.speech.language = this.$.speech__languages.selected
+        this.settings.speech.voice = this.$.speech__voices.selected
+        this.settings.speech.url = this.$.speech__url.value
+        this.settings.speech.codec = this.$.speech__codec.selected
+        this.$.ajax_settings_post.body = {"settings": this.settings}
+        // Reload settings
+        this.getSettings()
+      },
+
+      languagesShow: function(response) {
+        this.languages = Object.keys(response.detail.response)
+        this.lang_voices = response.detail.response
+      },
+
+      _languageSelected :function(evt){
+        var selectedItem = evt.target.selectedItem;
+        this.voices = this.lang_voices[selectedItem.innerText.trim()]
+      }
+
     });
 
   </script>
