@@ -4,16 +4,20 @@ dep:
 	# https://deb.nodesource.com/node_4.x/pool/main/n/nodejs/nodejs_4.4.7-1nodesource1~sid1_amd64.deb
 
 npm:
-	npm install polymer-cli
-	npm install bower
-	node_modules/bower/bin/bower install
+	cd app && npm install polymer-cli
+	cd app && npm install bower
+	app/node_modules/bower/bin/bower install
+	mv bower_components app
 
 env:
 	echo source dev_virtualenv
 
+serve:
+	app/node_modules/polymer-cli/bin/polymer.js serve app
+
 builder:
 	rm -rf build
-	node_modules/polymer-cli/bin/polymer.js build --entrypoint app/index.html
+	app/node_modules/polymer-cli/bin/polymer.js build --entrypoint app/index.html
 	cp -r app/images build/bundled/app
 	cp -r app/images build/unbundled/app
 	cp -r app/elements/tep-tux/images build/unbundled/app/elements/tep-tux
