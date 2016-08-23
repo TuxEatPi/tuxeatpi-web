@@ -149,10 +149,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         wingsPosition: String,
       },
       // TODO change pulling to pushing ...
+      // Or at leat only when focus is on tep-control
       _ajaxWingsGetPosition: function() {
           this.async(function() {
               this.$.ajax_wings_get_position.generateRequest();
-          }, 50000);
+          }, 500);
       },
       eyeRightToggle: function(){
         var svg = this.$.tux_object;
@@ -206,12 +207,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
       wingsMovePositionDown: function(){
         this.$.ajax_wings_set_position.body = {"position": "down"};
-        if ( wingsPosition != 'down') {
+        if ( this.wingsPosition != 'down') {
             this.$.ajax_wings_set_position.body = {"position": "down"};
         }
       },
       wingsMovePositionUp: function(){
-        if ( wingsPosition != 'up') {
+        if ( this.wingsPosition != 'up') {
             this.$.ajax_wings_set_position.body = {"position": "up"};
         }
       },
