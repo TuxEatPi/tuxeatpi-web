@@ -13,6 +13,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../../bower_components/iron-icons/av-icons.html">
 <link rel="import" href="tep-controls.html">
 <link rel="import" href="tep-voice.html">
+<link rel="import" href="tep-nlu.html">
 <link rel="import" href="tep-settings.html">
 
 <dom-module id="tep-tux">
@@ -59,6 +60,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <iron-icon icon="record-voice-over"></iron-icon>
           <a data-route="tux-voice" href="{{baseUrl}}tux/voice">Voice</a>
         </paper-tab>
+        <paper-tab tab-id="nlu" link>
+          <iron-icon icon="av:surround-sound"></iron-icon>
+          <a data-route="tux-nlu" href="{{baseUrl}}tux/nlu">NLU</a>
+        </paper-tab>
         <paper-tab tab-id="settings" link>
           <iron-icon icon="settings"></iron-icon>
           <a data-route="tux-settings" href="{{baseUrl}}tux/settings">Settings</a>
@@ -71,6 +76,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         <section data-route="tux-voice" tabindex="-1">
             <tep-voice></tep-voice>
+        </section>
+
+        <section data-route="tux-nlu" tabindex="-1">
+            <tep-nlu></tep-nlu>
         </section>
 
         <section data-route="tux-settings" tabindex="-1">

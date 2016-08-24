@@ -17,7 +17,7 @@ serve:
 
 builder:
 	rm -rf build
-	app/node_modules/polymer-cli/bin/polymer.js build --entrypoint app/index.html
+	node_modules/polymer-cli/bin/polymer.js build --entrypoint app/index.html
 	cp -r app/images build/bundled/app
 	cp -r app/images build/unbundled/app
 	cp -r app/elements/tep-tux/images build/unbundled/app/elements/tep-tux
