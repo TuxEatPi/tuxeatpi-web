@@ -140,6 +140,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         handle-as="json"
         method="POST"
         content-type='application/json'
+        on-response="settingsShow"
         debounce-duration="500"
         >
       </iron-ajax>
@@ -216,8 +217,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.settings.speech.url = this.$.speech__url.value
         this.settings.speech.codec = this.$.speech__codec.selected
         this.$.ajax_settings_post.body = {"settings": this.settings}
-        // Reload settings
-        this.getSettings()
       },
 
       languagesShow: function(response) {
