@@ -96,15 +96,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 </paper-dropdown-menu>
               </div>
               <div class="setting">
-                <paper-dropdown-menu label="Voice" no-ink no-animations>
-                  <paper-listbox id="speech__voices" class="dropdown-content" attr-for-selected="data-value">
-                    <template is="dom-repeat" items="{{voices}}" as="voice">
-                      <paper-item data-value="[[voice]]" >[[voice]]</paper-item>
-                     </template>
-                  </paper-listbox>
-                </paper-dropdown-menu>
-              </div>
-              <div class="setting">
                 <paper-input id="speech__url" label="URL"></paper-input>
               </div>
               <div class="setting">
@@ -168,11 +159,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           type: Array,
           value: []
         },
-        voices: {
-          type: Array,
-          value: []
-        },
-        lang_voices: {
+       lang_voices: {
           type: Array,
           value: []
         },
@@ -201,7 +188,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.$.speech__app_id.value = settings.speech.app_id
         this.$.speech__app_key.value = settings.speech.app_key
         this.$.speech__languages.selected = settings.speech.language
-        this.$.speech__voices.selected = settings.speech.voice
         this.$.speech__url.value = settings.speech.url
         this.$.speech__codec.selected = settings.speech.codec
         this.settings = settings
@@ -213,7 +199,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.settings.speech.app_id = this.$.speech__app_id.value
         this.settings.speech.app_key = this.$.speech__app_key.value
         this.settings.speech.language = this.$.speech__languages.selected
-        this.settings.speech.voice = this.$.speech__voices.selected
         this.settings.speech.url = this.$.speech__url.value
         this.settings.speech.codec = this.$.speech__codec.selected
         this.$.ajax_settings_post.body = {"settings": this.settings}
@@ -223,11 +208,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.languages = Object.keys(response.detail.response)
         this.lang_voices = response.detail.response
       },
-
-      _languageSelected :function(evt){
-        var selectedItem = evt.target.selectedItem;
-        this.voices = this.lang_voices[selectedItem.innerText.trim()]
-      }
 
     });
 
