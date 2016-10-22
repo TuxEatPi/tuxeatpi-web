@@ -16,3 +16,7 @@ body {
 .page-title {
   outline: none;
 }
+
+paper-submenu paper-menu a.submenu:not([style-scope]):not(.style-scope)  {
+    padding-left: 32px;
+}
