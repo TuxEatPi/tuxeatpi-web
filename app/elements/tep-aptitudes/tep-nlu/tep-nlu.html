@@ -1,0 +1,116 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-styles/typography.html">
+<link rel="import" href="../../bower_components/iron-icons/av-icons.html">
+<link rel="import" href="tep-nlu-audio.html">
+<link rel="import" href="tep-nlu-text.html">
+
+<dom-module id="tep-nlu">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+      }
+
+      #container {
+        max-width: 600px;
+      }
+      paper-tabs, paper-toolbar {
+        background-color: var(--paper-blue-900);
+        color: #fff;
+      }
+
+      paper-tab {
+        padding: 0px 15px;
+      }
+
+      paper-tab[link] a {
+        /* These mixins (from iron-flex-layout) center the link text. */
+        @apply(--layout-horizontal);
+        @apply(--layout-center-center);
+        color: #fff;
+        text-decoration: none;
+        margin: 5px;
+      }
+
+      span,
+      input {
+        @apply(--paper-font-body2);
+      }
+    </style>
+
+      <h1 class="page-title" tabindex="-1">Natural Language Understanding</h1>
+      <paper-tabs id="tabs_subpages" selected="{{subpage}}" scrollable>
+        <paper-tab tab-id="text" link>
+          <iron-icon icon="av:surround-sound"></iron-icon>
+          <a data-route="tux-nlu-text" href="{{baseUrl}}aptitudes/nlu/text">Text</a>
+        </paper-tab>
+        <paper-tab tab-id="audio" link>
+          <iron-icon icon="record-voice-over"></iron-icon>
+          <a data-route="tux-nlu-audio" href="{{baseUrl}}aptitudes/nlu/audio">Audio</a>
+        </paper-tab>
+        <paper-tab tab-id="settings" link>
+          <iron-icon icon="settings"></iron-icon>
+          <a data-route="tux-nlu-settings" href="{{baseUrl}}aptitudes/nlu/settings">Settings</a>
+        </paper-tab>
+      </paper-tabs>
+      <iron-pages selected="{{subpage}}">
+
+        <section data-route="tux-nlu-text" tabindex="-1">
+            <tep-nlu-text></tep-nlu-text>
+        </section>
+
+        <section data-route="tux-nlu-audio" tabindex="-1">
+            <tep-nlu-audio></tep-nlu-audio>
+        </section>
+
+        <section data-route="tux-nlu-settings" tabindex="-1">
+            <tep-nlu-settings></tep-nlu-settings>
+        </section>
+
+      </iron-pages>
+  </template>
+
+  <script>
+    (function() {
+      'use strict';
+
+      Polymer({
+        is: 'tep-nlu',
+      properties: {
+          routeParams: {
+            type: Object,
+            observer: '_routeParamsChanged'
+          }
+        },
+        _routeParamsChanged: function(newValue) {
+            // Set tab in function of the route
+            var tep_tux = this;
+            this.$.tabs_subpages.items.forEach(function(tab, index){
+                if (tab.getAttribute("tab-id") == newValue.subpage){
+                    tep_tux.set('subpage', index);
+                }
+            })
+        },
+
+        ready: function() {
+                this.async(function() {
+                  // If the path is blank, redirect to controls
+                  if (!this.subpage) {
+                    this.set('subpage', 0);
+                  }
+                });
+              }
+      });
+    })();
+  </script>
+</dom-module>

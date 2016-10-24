@@ -19,7 +19,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
 
 
-<dom-module id="tep-nlu">
+<dom-module id="tep-http-doc">
 
   <template>
 
@@ -56,61 +56,43 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
 
     <div class="card">
-      <h1>TuxDroid Natural Language Understanding</h1>
+      <h1>Http endpoints</h1>
 
       <div class="nlu">
-        <div>
-        <paper-checkbox id="say_it">
-          Say it
-        </paper-checkbox>
-        </div>
-        <div>
-        <paper-checkbox id="do_it">
-          Do it
-        </paper-checkbox>
-        </div>
-        <div class="text">
-          <paper-textarea label="Sentence to understand" id=text></paper-textarea>
-        </div>
-        <h3>Answer</h3>  
+      <div>
+        <paper-button raised on-tap="Refresh" id="refresh-top">Refresh</paper-button>
+      </div>
         <div class="answer">
            {{answer}}
         </div>
       </div>
       <div>
-        <paper-button raised on-tap="Send" id="send">Send</paper-button>
-        <iron-ajax
-            auto
-            id="ajax_nlu_text"
-            url="http://127.0.0.1:8000/order"
-            content-type="application/json"
-            handle-as="json"
-            method="POST"
-            on-response="Response"
-            debounce-duration="500"
-            >
-        </iron-ajax>
+        <paper-button raised on-tap="Refresh" id="refresh-bot">Refresh</paper-button>
       </div>
-
     </div>
 
+    <iron-ajax
+        auto
+        id="ajax_http_doc"
+        url="http://127.0.0.1:8000/help"
+        handle-as="json"
+        method="GET"
+        on-response="Response"
+        debounce-duration="500"
+        >
+    </iron-ajax>
   </template>
 
   <script>
 
     Polymer({
-      is: 'tep-nlu',
+      is: 'tep-http-doc',
       properties: {
         answer: String
       },
 
-      Send: function(){
-        if (this.$.text.value != null && this.$.text.value != '') {
-            this.$.ajax_nlu_text.body = {"command": "aptitudes.nlu.text",
-                                         "arguments": {"text": this.$.text.value,
-                                                       "do_it": this.$.do_it.checked,
-                                                       "say_it": this.$.say_it.checked}}
-        }
+      Refresh: function(){
+        this.$.ajax_http_doc.generateRequest();
       },
       Response: function(response){
         console.log(response.detail.response.result)

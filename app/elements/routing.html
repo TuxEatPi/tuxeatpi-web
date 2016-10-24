@@ -75,8 +75,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       setFocus(app.route);
     });
 
+    page(app.baseUrl + 'aptitudes/http', function() {
+      app.route = 'aptitudes__http';
+      setFocus(app.route);
+    });
+
+    page(app.baseUrl + 'aptitudes/http/:subpage', function(data) {
+      app.route = 'aptitudes__http';
+      app.params = data.params;
+      setFocus(app.route);
+    });
+
     page(app.baseUrl + 'aptitudes/nlu', function() {
       app.route = 'aptitudes__nlu';
+      setFocus(app.route);
+    });
+
+    page(app.baseUrl + 'aptitudes/nlu/:subpage', function(data) {
+      app.route = 'aptitudes__nlu';
+      app.params = data.params;
       setFocus(app.route);
     });
 
