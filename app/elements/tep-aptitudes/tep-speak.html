@@ -1,0 +1,98 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-iconset-svg/iron-iconset-svg.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-input/paper-textarea.html">
+
+
+
+<dom-module id="tep-speak">
+
+  <template>
+
+    <style is="custom-style">
+      :host {
+        display: block;
+        padding: 10px;
+      }
+      .card {
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+        padding: 16px;
+        margin: 24px;
+        border-radius: 5px;
+        background-color: #fff;
+        color: #757575;
+      }
+      .circle {
+        display: inline-block;
+        height: 64px;
+        width: 64px;
+        border-radius: 50%;
+        background: #ddd;
+        line-height: 64px;
+        font-size: 30px;
+        color: #555;
+        text-align: center;
+      }
+      h1 {
+        font-size: 22px;
+        margin: 16px 0;
+        color: #212121;
+      }
+
+    </style>
+
+    <div class="card">
+      <h1>TuxDroid Voice</h1>
+
+      <div class="voice">
+        <div class="tts">
+          <paper-textarea label="Text to speech" id=text></paper-textarea>
+        </div>
+      </div>
+      <div>
+        <paper-button raised on-tap="Speak" id="speak"><iron-icon icon="icons:record-voice-over"></iron-icon>Speak</paper-button>
+        <iron-ajax
+            auto
+            id="ajax_tts"
+            url="http://127.0.0.1:8000/order"
+            content-type="application/json"
+            handle-as="json"
+            method="POST"
+            debounce-duration="500"
+            >
+        </iron-ajax>
+      </div>
+
+    </div>
+
+  </template>
+
+  <script>
+
+    Polymer({
+      is: 'tep-speak',
+
+      Speak: function(){
+        if (this.$.text.value != null && this.$.text.value != '') {
+            this.$.ajax_tts.body = {"command": "aptitudes.speak.say", "arguments": {"tts": this.$.text.value }}
+        }
+      }
+    });
+
+  </script>
+
+</dom-module>

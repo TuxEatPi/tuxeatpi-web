@@ -87,7 +87,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 <paper-input id="speech__app_key" label="Nuance App key"></paper-input>
               </div>
               <div class="setting">
-                <paper-dropdown-menu label="Language" no-ink no-animations on-iron-select="_languageSelected">
+                <paper-dropdown-menu label="Language" no-ink no-animations>
                   <paper-listbox id="speech__languages" class="dropdown-content" attr-for-selected="data-value">
                     <template is="dom-repeat" items="{{languages}}" as="language">
                       <paper-item data-value="[[language]]" >[[language]]</paper-item>
@@ -137,7 +137,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </iron-ajax>
       <iron-ajax
         id="ajax_languages_get"
-        url="/tux/settings/languages"
+        url="http://127.0.0.1:8000/settings/languages"
         handle-as="json"
         method="GET"
         content-type='application/json'
@@ -180,7 +180,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       getSettings: function(){
-//        this.$.ajax_languages_get.generateRequest()
+        this.$.ajax_languages_get.generateRequest()
         this.$.ajax_settings_get.generateRequest()
       },
 
@@ -197,7 +197,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       settingsSave: function(){
-
         this.settings.global.name = this.$.global__name.value
         this.settings.global.gender = this.$.global__gender.selected
         this.settings.speech.app_id = this.$.speech__app_id.value
@@ -209,8 +208,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       languagesShow: function(response) {
-        this.languages = Object.keys(response.detail.response)
-        this.lang_voices = response.detail.response
+        this.languages = Object.keys(response.detail.response.result)
+        this.lang_voices = response.detail.response.result
       },
 
 

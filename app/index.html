@@ -89,7 +89,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <span>Settings</span>
           </a>
 
-          <a data-route="tux" href="{{baseUrl}}body">
+          <a data-route="body" href="{{baseUrl}}body">
             <iron-icon icon="accessibility"></iron-icon>
             <span>Body</span>
           </a>
@@ -181,6 +181,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <section data-route="settings" tabindex="-1">
               <paper-material elevation="1">
                 <tep-settings></tep-settings>
+              </paper-material>
+            </section>
+
+            <section data-route="body" tabindex="-1">
+              <paper-material elevation="1">
+                <tep-body></tep-body>
+              </paper-material>
+            </section>
+
+            <section data-route="aptitudes__speak" tabindex="-1">
+              <paper-material elevation="1">
+                <tep-speak></tep-speak>
+              </paper-material>
+            </section>
+
+            <section data-route="aptitudes__nlu" tabindex="-1">
+              <paper-material elevation="1">
+                <tep-nlu></tep-nlu>
               </paper-material>
             </section>
 
