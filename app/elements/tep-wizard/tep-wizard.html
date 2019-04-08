@@ -11,9 +11,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/paper-styles/typography.html">
 <link rel="import" href="../../bower_components/iron-icons/av-icons.html">
-<link rel="import" href="tep-settings-base.html">
+<link rel="import" href="tep-wizard-wifi.html">
 
-<dom-module id="tep-settings">
+<dom-module id="tep-wizard">
   <template>
     <style include="shared-styles">
       :host {
@@ -51,7 +51,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <paper-tabs id="tabs_subpages" selected="{{subpage}}" scrollable>
         <paper-tab tab-id="text" link>
           <iron-icon icon="icons:help"></iron-icon>
-          <a data-route="tux-settings-base" href="{{baseUrl}}settings/base">Base</a>
+          <a data-route="tux-wizard-wifi" href="{{baseUrl}}settings/base">Base</a>
         </paper-tab>
       </paper-tabs>
       <iron-pages selected="{{subpage}}">
@@ -70,7 +70,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       'use strict';
 
       Polymer({
-        is: 'tep-settings',
+        is: 'tep-wizard',
       properties: {
           routeParams: {
             type: Object,

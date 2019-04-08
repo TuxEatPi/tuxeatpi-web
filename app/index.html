@@ -84,6 +84,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <span>Home</span>
           </a>
 
+          <a data-route="wizard" href="{{baseUrl}}wizard">
+            <iron-icon icon="settings"></iron-icon>
+            <span>Wizard</span>
+          </a>
+
           <a data-route="settings" href="{{baseUrl}}settings">
             <iron-icon icon="settings"></iron-icon>
             <span>Settings</span>
@@ -175,6 +180,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <section data-route="home" tabindex="-1">
               <paper-material elevation="1">
                 <tep-home></tep-home>
+              </paper-material>
+            </section>
+
+            <section data-route="wizard" tabindex="-1">
+              <paper-material elevation="1">
+                <tep-wizard></tep-wizard>
               </paper-material>
             </section>
 

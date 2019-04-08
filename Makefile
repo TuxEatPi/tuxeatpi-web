@@ -13,7 +13,7 @@ env:
 	echo source dev_virtualenv
 
 serve:
-	app/node_modules/polymer-cli/bin/polymer.js serve app
+	app/node_modules/polymer-cli/bin/polymer.js serve app -H 0.0.0.0 -p 8080
 
 builder:
 	rm -rf build
